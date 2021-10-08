@@ -15,11 +15,11 @@ class PostManager(models.Manager):
 
 class Post(models.Model):
     objects = PostManager()
-    label = models.CharField(max_length=160, required=True)
-    short_description = models.TextField(max_length=300, required=True)
-    image = models.UrlField(max_length=200)
-    full_description = models.CharField(max_length=1000, required=True)
-    user = models.ForeingKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    label = models.CharField(max_length=160) # , required=True)
+    short_description = models.TextField(max_length=300) #, required=True)
+    image = models.URLField(max_length=200)
+    full_description = models.CharField(max_length=1000) #, required=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     is_published = models.BooleanField(default=False)
 
     def __str__(self):
@@ -29,9 +29,9 @@ class Post(models.Model):
 # + admin page
 class Comment(models.Model):
     objects = PostManager()
-    username = models.CharField(max_length=20, required=True)
-    text = models.CharField(max_length=300, required=True)
-    for_post = models.ForeingKey(Post, on_delete=models.CASCADE)
+    username = models.CharField(max_length=20) #, required=True)
+    text = models.CharField(max_length=300) #, required=True)
+    for_post = models.ForeignKey(Post, on_delete=models.CASCADE)
     is_published = models.BooleanField(default=False)
 
     def __str__(self):

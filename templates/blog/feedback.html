@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div>
+    <h1>Запрос обратной связи</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Отправить запрос" / class="clearfix">
+    </form>
+</div>
+
+{% endblock %}

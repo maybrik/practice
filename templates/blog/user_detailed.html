@@ -1,0 +1,23 @@
+{% extends base.html %}
+
+{% block content %}
+<div>
+<h2>Профиль пользователя  {{ object.username }}</h2>
+<h5>Имя пользователя: {{ object.firstname }}</h5>
+<h5>Фамилия пользователя: {{ object.lastname }}</h5>
+<h5>Email: {{ object.email }}</h5>
+
+<hr>
+
+<h2> Посты {{ object.username }}</h2>
+<ul>
+    {% for post in object %}
+    <li><h4><a href="{% url 'blog:post_detailed' post.id %}">{{ post.label }}</a></h4></li>
+    <h5> {{ post.short_description }}</h5>
+    {% empty %}
+    <li> {{ object.username ещё не написал ни одного поста }}</li>
+    {% endfor %}
+</ul>
+</div>
+
+{% endblock %}

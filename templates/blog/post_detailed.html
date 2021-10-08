@@ -1,0 +1,28 @@
+{% extends base.html %}
+
+{% block title %} {{ object.label }} {% endblock %}
+
+{% block content %}
+
+  <div class="post-entry">
+    <h2>{{ post.title }}</h2>
+    <h2>{{ post.user }}</h2>
+      <table cellpadding="2" border="2" width="100">
+    <tr>
+        <td>Краткое описание поста:</td>
+        <td>{{ post.short_description }}</td>
+    </tr>
+    <tr>
+        <td>{{ post.full_description }}</td>
+    </tr>
+          <tr>
+          <td>
+          {% for comment in post.comment.all %}
+              <p>{{ comment }}</p>
+          {% endfor %}
+          </td>
+          </tr>
+    </table>
+  </div>
+
+{% endblock %}
