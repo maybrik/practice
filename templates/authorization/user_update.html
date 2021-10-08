@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div>
+    <h1>Обновление данных</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Подтвердить изменение" / class="clearfix">
+    </form>
+</div>
+
+{% endblock %}
