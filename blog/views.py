@@ -28,10 +28,10 @@ class AllPostsList(ListView):
     paginate_by = 20
 
 
-class PostDetail(DetailView, pk_url_kwarg):
+class PostDetail(DetailView, pk):
     model = Post
     template_name = 'post_detailed.html'
-    pk_url_kwarg = 'id'
+    pk = 'id'
 
 
 class AllUsersList(ListView):
