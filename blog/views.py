@@ -1,4 +1,4 @@
-from django.shortcuts import render, reverse, redirect
+from django.shortcuts import render, reverse, redirect, get_object_or_404
 
 from django.core.mail import send_mail
 
@@ -12,6 +12,7 @@ from django.views.generic import CreateView, FormView, DetailView, UpdateView, L
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from mixins import CacheMixin
 
 
 user = get_user_model()
@@ -21,20 +22,25 @@ def index(request):
     return render(request, 'homepage.html')
 
 
-class AllPostsList(ListView):
+class AllPostsList(CacheMixin, ListView):
     model = Post
     template_name = 'posts_list.html'
     queryset = Post.objects.filter(is_published=True)
     paginate_by = 20
 
 
-class PostDetail(DetailView, pk):
+class PostDetail(DetailView):
     model = Post
     template_name = 'post_detailed.html'
-    pk = 'id'
+    pk = 'username'
 
 
-class AllUsersList(ListView):
+# def post_detail(request, pk):
+   # post = get_object_or_404(Post, pk=pk, is_published=True)
+   # comments = Comment.objects.all().filter(is_published=True)
+
+
+class AllUsersList(CacheMixin, ListView):
     model = User
     template_name = 'users_list.html'
     queryset = User.objects.all()
@@ -75,7 +81,7 @@ class PostUpdateView(UpdateView, LoginRequiredMixin):
         return reverse('blog:post_detailed', kwr={'pk': self.object.pk})
 
 
-class PostUserListView(generic.ListView):
+class PostUserListView(CacheMixin, ListView):
     model = Post
     template_name = 'post_user_list.html'
 

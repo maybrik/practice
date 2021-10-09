@@ -23,11 +23,11 @@ class Command(BaseCommand):
         amount = options['amount']
 
         for _ in range(amount):
-            User.object.create(username=fake.name(), password=make_password('password'))
+            User.objects.create(username=fake.name(), password=fake.sentence(nb_words=1))
 
             posts = []
             for _ in UserM.objects.all():
-                for i in range(random(1, 10)):
+                for i in range(1, 10):
                     posts.append(Post(label=fake.sentence(nb_words=1), short_description=fake.sentence(nb_words=3),
                                       full_description=fake.text(), user=_))
 
