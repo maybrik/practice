@@ -10,7 +10,6 @@ from .forms import Feedback
 
 from django.views.generic import CreateView, FormView, DetailView, UpdateView, ListView
 
-from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from mixins import CacheMixin
 

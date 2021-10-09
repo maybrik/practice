@@ -1,3 +1,6 @@
+from django.views.decorators.cache import cache_page
+
+
 class CacheMixin(object):
     cache_timeout = 60
 
