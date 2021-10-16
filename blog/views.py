@@ -13,6 +13,7 @@ from django.views.generic import CreateView, FormView, DetailView, UpdateView, L
 from django.contrib.auth.mixins import LoginRequiredMixin
 from mixins import CacheMixin
 
+from tasks import sending_email
 
 user = get_user_model()
 
@@ -23,14 +24,14 @@ def index(request):
 
 class AllPostsList(CacheMixin, ListView):
     model = Post
-    template_name = 'posts_list.html'
+    template_name = 'blog/posts_list.html'
     queryset = Post.objects.filter(is_published=True)
     paginate_by = 20
 
 
 class PostDetail(DetailView):
     model = Post
-    template_name = 'post_detailed.html'
+    template_name = 'blog/post_detailed.html'
     pk = 'username'
 
 
@@ -41,7 +42,7 @@ class PostDetail(DetailView):
 
 class AllUsersList(CacheMixin, ListView):
     model = User
-    template_name = 'users_list.html'
+    template_name = 'blog/users_list.html'
     queryset = User.objects.all()
     paginate_by = 20
 
@@ -57,7 +58,7 @@ def get_user_profile(request, username):
 class PostCreateView(CreateView, LoginRequiredMixin):
     model = Post
     fields = ['label', 'short_description', 'image', 'full_description', 'user', 'is_published']
-    template_name = 'post_create.html'
+    template_name = 'blog/post_create.html'
 
     def get_success_url(self):
         send_mail('Новый пост', f"{self.object.label}", "admin@admin.com", ['admin@admin.com'])
@@ -67,7 +68,7 @@ class PostCreateView(CreateView, LoginRequiredMixin):
 class PostUpdateView(UpdateView, LoginRequiredMixin):
     model = Post
     fields = ['label', 'short_description', 'image', 'full_description', 'user', 'is_published']
-    template_name = 'post_update.html'
+    template_name = 'blog/post_update.html'
 
     def get_context_data(self, *args, **kwargs):
         queryset = Post.objects.get(id=self.kwargs['pk'])
@@ -82,7 +83,7 @@ class PostUpdateView(UpdateView, LoginRequiredMixin):
 
 class PostUserListView(CacheMixin, ListView):
     model = Post
-    template_name = 'post_user_list.html'
+    template_name = 'blog/post_user_list.html'
 
     def get_context_data(self, *args, **kwargs):
         queryset = Post.objects.get(author_id=self.kwargs['pk']).order_by('pk')
@@ -97,8 +98,9 @@ def feedback_form(request):
         if form.is_valid():
             email = form.cleaned_data('email')
             feedback_message = form.cleaned_data('feedback_message')
-            send_mail(email, feedback_message, [admin@admin.com])
-            return redirect('homepage')
+            # send_mail(email, feedback_message, [admin@admin.com])
+            sending_email.apply_async(email, feedback_message) # statement seems to have no effect??
+            # return redirect('homepage')
         else:
             form = Feedback()
             return render(request, 'feedback.html', context={"form": form})
