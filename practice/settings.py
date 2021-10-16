@@ -40,6 +40,9 @@ INSTALLED_APPS = [
 
     'blog',
     'authorization',
+    'django_extensions',
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 

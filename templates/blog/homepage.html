@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+<div>
+
+<p>Если вы авторизированы, можете создать пост <a href="{% url "post_create" %} по этой ссылке.</a></p>
+<p>Авторизироваться можно здесь: <a href="{% url "login" %}</a></p>
+<p>Если у вас нет профиля, регистрацию можно пройти здесь: <a href="{% url "register" %}</a></p>
+</div>
+{% endblock %}
